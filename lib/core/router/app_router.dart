@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:healthy_eating_app/presentation/pages/about_screen.dart';
+import 'package:healthy_eating_app/presentation/pages/home_page.dart';
+import 'package:healthy_eating_app/presentation/pages/recommendations_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -9,8 +12,8 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: '/',
-          name: 'home',                                    // ← имя можно изменить
-          pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()), // ← используем HomePage
+          name: 'home',
+          pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
         ),
         GoRoute(
           path: '/recommendations',
