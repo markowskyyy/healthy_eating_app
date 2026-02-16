@@ -6,11 +6,9 @@ import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/core/router/app_router.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await dotenv.load(fileName: ".env");
-  // await Firebase.initializeApp(
-  //   // options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp();
 
   runApp(const ProviderScope(child: MyApp()));
 }

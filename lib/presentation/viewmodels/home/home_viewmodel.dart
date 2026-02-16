@@ -37,23 +37,30 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   Future<void> selectDate(DateTime date) async {
-    final allEntries = await _useCases.getFoodEntries(params: null);
-    final filtered = _filterEntriesByDate(allEntries, date);
-    state = AsyncValue.data(state.value!.copyWith(selectedDate: date, entries: filtered));
+    // final allEntries = await _useCases.getFoodEntries(params: null);
+    // final filtered = _filterEntriesByDate(allEntries, date);
+    state = AsyncValue.data(state.value!.copyWith(selectedDate: date));
   }
 
-  Future<void> addEntry(String name, double? calories) async {
+  List<FoodEntry> filteredEntries () {
+    return _filterEntriesByDate(state.value!.entries, state.value!.selectedDate);
+  }
+
+  Future<void> addEntry(String name, double mass, double? calories) async {
+    final entryID = DateTime.now().millisecondsSinceEpoch.toString();
     final entry = FoodEntry(
-      id: const Uuid().v4(),
+      id: entryID,
       date: state.value!.selectedDate,
       name: name,
+      mass: mass,
       calories: calories,
     );
+
     await _useCases.addFoodEntry(params: entry);
     // После добавления обновляем список
     final allEntries = await _useCases.getFoodEntries(params: null);
     final filtered = _filterEntriesByDate(allEntries, state.value!.selectedDate);
-    state = AsyncValue.data(state.value!.copyWith(entries: filtered));
+    state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 
   Future<void> updateEntry(FoodEntry entry) async {

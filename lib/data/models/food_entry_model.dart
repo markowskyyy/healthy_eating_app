@@ -7,6 +7,7 @@ class FoodEntryModel extends FoodEntry {
     required super.id,
     required super.date,
     required super.name,
+    required super.mass,
     super.calories,
   });
 
@@ -17,6 +18,7 @@ class FoodEntryModel extends FoodEntry {
       id: doc.id, // TODO взять id [id]
       date: (data['date'] as Timestamp).toDate(),
       name: data['name'] as String,
+      mass: (data['mass'] as num).toDouble(),
       calories: (data['calories'] as num?)?.toDouble(),
     );
   }
@@ -26,6 +28,7 @@ class FoodEntryModel extends FoodEntry {
     return {
       'date': Timestamp.fromDate(date),
       'name': name,
+      'mass': mass,
       'calories': calories,
     };
   }
@@ -36,6 +39,7 @@ class FoodEntryModel extends FoodEntry {
       id: entity.id,
       date: entity.date,
       name: entity.name,
+      mass: entity.mass,
       calories: entity.calories,
     );
   }

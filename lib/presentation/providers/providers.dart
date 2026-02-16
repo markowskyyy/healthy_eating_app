@@ -11,7 +11,11 @@ import '../../data/repositories/openrouter_ai_repository.dart';
 // Репозитории
 final foodRepositoryProvider = Provider<FoodRepository>((ref) {
   final firestore = FirebaseFirestore.instance;
-  const userId = 'test_user_id'; // замените на реальный
+  const userId = '24YaHokBbjhecgiRvyahKn4l8c73';
+
+  // Простой юид и обьявление файрбейс тут т.к. как маленький проект и не подразумевает регистрацию
+  // TODO: при расширении сделать singleTon с подписокой на uid status юзера от FireBase
+
   return FirebaseFoodRepository(firestore: firestore, userId: userId);
 });
 

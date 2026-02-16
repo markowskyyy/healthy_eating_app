@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "807500363769",
+    "firebase_url": "https://eating-ai-test-app-default-rtdb.firebaseio.com",
+    "project_id": "eating-ai-test-app",
+    "storage_bucket": "eating-ai-test-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807500363769:android:6f4665706e03810c7d2f28",
+        "android_client_info": {
+          "package_name": "com.example.healthy_eating_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5PAg8kCUyEifgAf8u_lYemVQYNkAO_yk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
