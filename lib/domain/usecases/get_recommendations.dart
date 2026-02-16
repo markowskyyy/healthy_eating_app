@@ -1,24 +1,22 @@
+import 'package:healthy_eating_app/core/usecase/usecase.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
 import 'package:healthy_eating_app/domain/repositories/ai_repository.dart';
 import 'package:healthy_eating_app/domain/repositories/food_repository.dart';
 
-class GetRecommendations {
+class GetRecommendations implements UseCase<String, void> {
   final FoodRepository foodRepository;
   final AiRepository aiRepository;
 
   GetRecommendations(this.foodRepository, this.aiRepository);
 
-  Future<String> call(DateTime start, DateTime end) async {
-
+  @override
+  Future<String> call({void params}) async {
     // Получаем записи за период
-    final entries = await foodRepository.getEntriesForPeriod(start, end);
-
+    final entries = await foodRepository.getEntries();
     // Формируем промпт
     final prompt = _buildPrompt(entries);
-
     // Отправляем в AI и возвращаем ответ
     return await aiRepository.getRecommendations(prompt);
-
   }
 
   String _buildPrompt(List<FoodEntry> entries) {

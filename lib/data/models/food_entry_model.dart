@@ -1,0 +1,42 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthy_eating_app/domain/entities/food_entry.dart';
+
+
+class FoodEntryModel extends FoodEntry {
+  const FoodEntryModel({
+    required super.id,
+    required super.date,
+    required super.name,
+    super.calories,
+  });
+
+  /// Создание модели из документа Firestore
+  factory FoodEntryModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return FoodEntryModel(
+      id: doc.id, // TODO взять id [id]
+      date: (data['date'] as Timestamp).toDate(),
+      name: data['name'] as String,
+      calories: (data['calories'] as num?)?.toDouble(),
+    );
+  }
+
+  /// Преобразование в Map для сохранения в Firestore
+  Map<String, dynamic> toDocument() {
+    return {
+      'date': Timestamp.fromDate(date),
+      'name': name,
+      'calories': calories,
+    };
+  }
+
+  /// Создание модели из доменной сущности (для операций добавления/обновления)
+  factory FoodEntryModel.fromEntity(FoodEntry entity) {
+    return FoodEntryModel(
+      id: entity.id,
+      date: entity.date,
+      name: entity.name,
+      calories: entity.calories,
+    );
+  }
+}

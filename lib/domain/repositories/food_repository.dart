@@ -2,7 +2,7 @@ import 'package:healthy_eating_app/domain/entities/food_entry.dart';
 
 abstract class FoodRepository {
   /// Получить записи за конкретный день
-  Future<List<FoodEntry>> getEntriesForDate(DateTime date);
+  Future<List<FoodEntry>> getEntries();
 
   /// Получить записи за период (для рекомендаций)
   Future<List<FoodEntry>> getEntriesForPeriod(DateTime start, DateTime end);
