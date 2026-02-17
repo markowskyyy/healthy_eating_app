@@ -11,11 +11,8 @@ class GetRecommendations implements UseCase<String, void> {
 
   @override
   Future<String> call({void params}) async {
-    // Получаем записи за период
     final entries = await foodRepository.getEntries();
-    // Формируем промпт
     final prompt = _buildPrompt(entries);
-    // Отправляем в AI и возвращаем ответ
     return await aiRepository.getRecommendations(prompt);
   }
 

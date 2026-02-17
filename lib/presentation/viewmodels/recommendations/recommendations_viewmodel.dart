@@ -24,14 +24,11 @@ class RecommendationsViewModel extends _$RecommendationsViewModel {
   }
 
   Future<void> fetchRecommendations() async {
-    // Устанавливаем состояние загрузки
     state = const AsyncValue.loading();
     try {
       final response = await _getRecommendations(params: null);
-      // Обновляем состояние с данными
       state = AsyncValue.data(RecommendationsState(response: response));
     } catch (e, stack) {
-      // Обновляем состояние с ошибкой
       state = AsyncValue.error(e, stack);
     }
   }

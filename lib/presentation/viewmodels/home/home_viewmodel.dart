@@ -23,15 +23,15 @@ class HomeViewModel extends _$HomeViewModel {
   Future<HomeState> build() async {
     _useCases = ref.watch(foodUseCasesProvider);
     final now = DateTime.now();
-    final allEntries = await _useCases.getFoodEntries(params: null);
+    final allEntries = await _useCases.getFoodEntries();
     return HomeState(selectedDate: now, entries: allEntries);
   }
 
   List<FoodEntry> _filterEntriesByDate(List<FoodEntry> entries, DateTime date) {
     return entries.where((e) =>
-    e.date.year == date.year &&
-        e.date.month == date.month &&
-        e.date.day == date.day).toList();
+      e.date.year == date.year &&
+      e.date.month == date.month &&
+      e.date.day == date.day).toList();
   }
 
   Future<void> selectDate(DateTime date) async {
@@ -55,7 +55,7 @@ class HomeViewModel extends _$HomeViewModel {
     );
 
     await _useCases.addFoodEntry(params: entry);
-    final allEntries = await _useCases.getFoodEntries(params: null);
+    final allEntries = await _useCases.getFoodEntries();
     state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 
@@ -69,7 +69,7 @@ class HomeViewModel extends _$HomeViewModel {
 
   Future<void> deleteEntry(String id) async {
     await _useCases.deleteFoodEntry(params: id);
-    final allEntries = await _useCases.getFoodEntries(params: null);
+    final allEntries = await _useCases.getFoodEntries();
     state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 }
