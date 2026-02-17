@@ -1,9 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:healthy_eating_app/domain/entities/food_entry.dart';
+import 'package:healthy_eating_app/domain/usecases/food_use_cases.dart';
+import 'package:healthy_eating_app/presentation/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
-import '../../../domain/entities/food_entry.dart';
-import '../../../domain/usecases/food_use_cases.dart';
-import '../../providers/providers.dart';
 
 part 'home_viewmodel.freezed.dart';
 part 'home_viewmodel.g.dart';
@@ -25,8 +24,7 @@ class HomeViewModel extends _$HomeViewModel {
     _useCases = ref.watch(foodUseCasesProvider);
     final now = DateTime.now();
     final allEntries = await _useCases.getFoodEntries(params: null);
-    final todaysEntries = _filterEntriesByDate(allEntries, now);
-    return HomeState(selectedDate: now, entries: todaysEntries);
+    return HomeState(selectedDate: now, entries: allEntries);
   }
 
   List<FoodEntry> _filterEntriesByDate(List<FoodEntry> entries, DateTime date) {
@@ -37,8 +35,6 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   Future<void> selectDate(DateTime date) async {
-    // final allEntries = await _useCases.getFoodEntries(params: null);
-    // final filtered = _filterEntriesByDate(allEntries, date);
     state = AsyncValue.data(state.value!.copyWith(selectedDate: date));
   }
 
@@ -57,23 +53,19 @@ class HomeViewModel extends _$HomeViewModel {
     );
 
     await _useCases.addFoodEntry(params: entry);
-    // После добавления обновляем список
     final allEntries = await _useCases.getFoodEntries(params: null);
-    final filtered = _filterEntriesByDate(allEntries, state.value!.selectedDate);
     state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 
   Future<void> updateEntry(FoodEntry entry) async {
     await _useCases.updateFoodEntry(params: entry);
     final allEntries = await _useCases.getFoodEntries(params: null);
-    final filtered = _filterEntriesByDate(allEntries, state.value!.selectedDate);
-    state = AsyncValue.data(state.value!.copyWith(entries: filtered));
+    state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 
   Future<void> deleteEntry(String id) async {
     await _useCases.deleteFoodEntry(params: id);
     final allEntries = await _useCases.getFoodEntries(params: null);
-    final filtered = _filterEntriesByDate(allEntries, state.value!.selectedDate);
-    state = AsyncValue.data(state.value!.copyWith(entries: filtered));
+    state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
   }
 }

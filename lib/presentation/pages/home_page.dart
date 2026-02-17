@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/home/home_viewmodel.dart';
 import 'package:healthy_eating_app/presentation/widgets/date_selector.dart';
+import 'package:healthy_eating_app/presentation/widgets/home_page_body.dart';
 
 
 class HomePage extends ConsumerWidget {
@@ -16,7 +18,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Дневник питания'),
+        title: Text('Дневник питания', style: AppTextStyles.titleWhite),
         backgroundColor: AppColors.primary,
       ),
       body: homeState.when(
@@ -39,6 +41,7 @@ class HomePage extends ConsumerWidget {
 
   void _showAddDialog(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController();
+    final massController = TextEditingController();
     final caloriesController = TextEditingController();
 
     showDialog(
@@ -57,12 +60,27 @@ class HomePage extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             TextField(
+              controller: massController,
+              decoration: const InputDecoration(
+                labelText: 'Масса (гр)',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly, // разрешает только цифры
+              ],
+            ),
+            const SizedBox(height: 12),
+            TextField(
               controller: caloriesController,
               decoration: const InputDecoration(
                 labelText: 'Калории (необязательно)',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly, // разрешает только цифры
+              ],
             ),
           ],
         ),
@@ -74,9 +92,10 @@ class HomePage extends ConsumerWidget {
           ElevatedButton(
             onPressed: () {
               final name = nameController.text.trim();
-              if (name.isNotEmpty) {
+              final mass = double.tryParse(massController.text.trim()) ?? 0.0;
+              if (name.isNotEmpty && mass != 0.0) {
                 final calories = double.tryParse(caloriesController.text);
-                ref.read(homeViewModelProvider.notifier).addEntry(name, 22.0, calories);
+                ref.read(homeViewModelProvider.notifier).addEntry(name, mass, calories);
                 Navigator.pop(ctx);
               }
             },
@@ -87,50 +106,6 @@ class HomePage extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class HomePageBody extends StatelessWidget {
-  final Function(String id) deleteEntry;
-  final Function(DateTime date) selectDate;
-  final DateTime selectedDate;
-  final List<FoodEntry> entries;
-  const HomePageBody({
-    super.key,
-    required this.deleteEntry,
-    required this.selectDate,
-    required this.selectedDate,
-    required this.entries,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DateSelector(
-          selectedDate: selectedDate,
-          onDateChanged: (date) => selectDate(date),
-        ),
-        Expanded(
-          child: entries.isEmpty
-              ? const Center(child: Text('Нет записей за этот день'))
-              : ListView.builder(
-            itemCount: entries.length,
-            itemBuilder: (ctx, index) {
-              final entry = entries[index];
-              return ListTile(
-                title: Text(entry.name),
-                subtitle: Text('${entry.calories?.toStringAsFixed(0) ?? '?'} ккал'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => deleteEntry(entry.id),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

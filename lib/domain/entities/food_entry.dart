@@ -12,4 +12,11 @@ class FoodEntry {
     required this.mass,
     this.calories,
   });
+
+  @override
+  String toString() {
+    final massStr = mass.toStringAsFixed(0);
+    final caloriesStr = calories?.toStringAsFixed(0) ?? '?';
+    return '$massStr гр / $caloriesStr ккал';
+  }
 }

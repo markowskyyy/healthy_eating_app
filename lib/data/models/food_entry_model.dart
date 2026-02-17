@@ -15,7 +15,7 @@ class FoodEntryModel extends FoodEntry {
   factory FoodEntryModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return FoodEntryModel(
-      id: doc.id, // TODO взять id [id]
+      id: doc.id,
       date: (data['date'] as Timestamp).toDate(),
       name: data['name'] as String,
       mass: (data['mass'] as num).toDouble(),
@@ -23,7 +23,6 @@ class FoodEntryModel extends FoodEntry {
     );
   }
 
-  /// Преобразование в Map для сохранения в Firestore
   Map<String, dynamic> toDocument() {
     return {
       'date': Timestamp.fromDate(date),
@@ -33,7 +32,6 @@ class FoodEntryModel extends FoodEntry {
     };
   }
 
-  /// Создание модели из доменной сущности (для операций добавления/обновления)
   factory FoodEntryModel.fromEntity(FoodEntry entity) {
     return FoodEntryModel(
       id: entity.id,

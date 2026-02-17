@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:healthy_eating_app/data/models/food_entry_model.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
 import 'package:healthy_eating_app/domain/repositories/food_repository.dart';
@@ -53,11 +52,3 @@ class FirebaseFoodRepository implements FoodRepository {
     await _entriesCollection.doc(id).delete();
   }
 }
-
-
-// final refFirebase = FirebaseDatabase.instance.ref();
-//
-//
-// final model = FoodEntryModel.fromEntity(entry);
-// // final result = await _entriesCollection.doc(entry.id).set(model.toDocument());
-// await refFirebase.child('users').set(model.toDocument());

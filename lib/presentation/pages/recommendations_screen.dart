@@ -14,7 +14,10 @@ class RecommendationsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Рекомендации AI'),
+        title: Text(
+            'Рекомендации AI',
+            style: AppTextStyles.title.copyWith(color: Colors.white)
+        ),
         backgroundColor: AppColors.primary,
       ),
       body: Padding(
@@ -36,7 +39,7 @@ class RecommendationsScreen extends ConsumerWidget {
                       state.response.isEmpty
                           ? 'Нажмите кнопку, чтобы получить рекомендации'
                           : state.response,
-                      style: AppTextStyles.bodyText,
+                      style: AppTextStyles.body,
                     ),
                   ),
                   loading: () => const Center(child: CircularProgressIndicator()),

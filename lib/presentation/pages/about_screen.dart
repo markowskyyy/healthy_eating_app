@@ -9,7 +9,10 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('О приложении'),
+        title: Text(
+            'О приложении',
+            style: AppTextStyles.title.copyWith(color: Colors.white)
+        ),
         backgroundColor: AppColors.primary,
       ),
       body: Padding(
