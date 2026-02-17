@@ -40,6 +40,14 @@ class AppTextStyles {
     color: AppColors.textDark,
   );
 
+  static const TextStyle subtitleWhite = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
+
+
   // Основной текст
   static const TextStyle body = TextStyle(
     fontFamily: fontFamily,

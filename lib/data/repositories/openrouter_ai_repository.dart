@@ -23,6 +23,7 @@ class OpenRouterAiRepository implements AiRepository {
           {'role': 'user', 'content': prompt}
         ],
         'temperature': 0.3,
+        'max_tokens': 1833,
       }),
     );
 

@@ -56,7 +56,7 @@ class RecommendationsScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () => viewModel.fetchRecommendations(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
@@ -65,7 +65,7 @@ class RecommendationsScreen extends ConsumerWidget {
               ),
               child: const Text(
                 'Получить рекомендации',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: AppTextStyles.subtitleWhite,
               ),
             ),
           ],

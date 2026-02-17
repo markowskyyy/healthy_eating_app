@@ -35,6 +35,8 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   Future<void> selectDate(DateTime date) async {
+    final today = DateTime.now();
+    if (date.isAfter(today)) return;
     state = AsyncValue.data(state.value!.copyWith(selectedDate: date));
   }
 
@@ -59,8 +61,10 @@ class HomeViewModel extends _$HomeViewModel {
 
   Future<void> updateEntry(FoodEntry entry) async {
     await _useCases.updateFoodEntry(params: entry);
-    final allEntries = await _useCases.getFoodEntries(params: null);
-    state = AsyncValue.data(state.value!.copyWith(entries: allEntries));
+    final updatedEntries = state.value!.entries.map((e) {
+      return e.id == entry.id ? entry : e;
+    }).toList();
+    state = AsyncValue.data(state.value!.copyWith(entries: updatedEntries));
   }
 
   Future<void> deleteEntry(String id) async {
