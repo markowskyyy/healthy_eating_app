@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/home/home_viewmodel.dart';
-import 'package:healthy_eating_app/presentation/widgets/date_selector.dart';
 import 'package:healthy_eating_app/presentation/widgets/food_entry_dialog.dart';
 import 'package:healthy_eating_app/presentation/widgets/home_page_body.dart';
 
@@ -15,7 +13,8 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
-    final notifier = ref.watch(homeViewModelProvider.notifier);
+    final notifier = ref.read(homeViewModelProvider.notifier);
+    final filteredEntries = notifier.filteredEntries();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +26,7 @@ class HomePage extends ConsumerWidget {
           selectDate: notifier.selectDate,
           deleteEntry: notifier.deleteEntry,
           selectedDate: state.selectedDate,
-          entries: notifier.filteredEntries(),
+          entries: filteredEntries,
           onEditEntry: (entry) => _showEditDialog(context, ref, entry),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
