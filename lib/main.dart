@@ -8,17 +8,26 @@ import 'package:healthy_eating_app/core/router/app_router.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp();
+  AppMetrica.runZoneGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load(fileName: ".env");
 
-  final apiKey = dotenv.env['APPMETRICA_API_KEY']!;
-  AppMetrica.activate(AppMetricaConfig(apiKey));
+    await Firebase.initializeApp();
+    final apiKey = dotenv.env['APPMETRICA_API_KEY']!;
+    await AppMetrica.activate(
+      AppMetricaConfig(
+          apiKey,
+          flutterCrashReporting: true,  // обязательно для Flutter-ошибок
+          logs: true,                    // для отладки (видеть логи в консоли)
+          crashReporting: true,           // для нативных ошибок
+          firstActivationAsUpdate: false, // важно для новых установок
+      ),
+    );
+    await AppMetrica.reportEvent('Запуск приложения');
 
-  AppMetrica.reportEvent('My first AppMetrica event!');
+    runApp(const ProviderScope(child: MyApp()));
+  });
 
-
-  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

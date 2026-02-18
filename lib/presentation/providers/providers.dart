@@ -18,19 +18,17 @@ final foodRepositoryProvider = Provider<FoodRepository>((ref) {
   final analytics = ref.watch(analyticsServiceProvider);
   final firestore = FirebaseFirestore.instance;
   const userId = '24YaHokBbjhecgiRvyahKn4l8c73';
-  // TODO(markovskyyy): при расширении сделать singleTon с подписокой на uid status юзера от FireBase
 
   return FirebaseFoodRepository(
-      firestore: firestore,
-      userId: userId,
-      analytics: analytics
+      firestore: firestore, userId: userId, analytics: analytics
   );
-});
+}); // TODO(markovskyyy): при расширении сделать singleTon с подписокой на uid status юзера от FireBase
 
 final aiRepositoryProvider = Provider<AiRepository>((ref) {
+  final analytics = ref.watch(analyticsServiceProvider);
   final apiKey = dotenv.env['OPENROUTER_API_KEY']!;
   final model = dotenv.env['DEEPSEEK_MODEL']!;
-  return OpenRouterAiRepository(apiKey: apiKey, model: model);
+  return OpenRouterAiRepository(apiKey: apiKey, model: model, analytics: analytics);
 });
 
 // Use cases

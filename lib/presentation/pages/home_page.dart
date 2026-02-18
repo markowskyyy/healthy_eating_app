@@ -18,13 +18,13 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Дневник питания', style: AppTextStyles.titleWhite),
+        title: const Text('Дневник питания', style: AppTextStyles.titleWhite),
         backgroundColor: AppColors.primary,
       ),
       body: homeState.when(
         data: (state) => HomePageBody(
           selectDate: notifier.selectDate,
-          deleteEntry: notifier.deleteEntry,
+          deleteEntry:  notifier.deleteEntry,
           selectedDate: state.selectedDate,
           entries: notifier.filteredEntries(),
           onEditEntry: (entry) => _showEditDialog(context, ref, entry),
