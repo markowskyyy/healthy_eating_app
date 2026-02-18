@@ -1,18 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../../domain/repositories/food_repository.dart';
-import '../../domain/repositories/ai_repository.dart';
-import '../../domain/usecases/food_use_cases.dart';
-import '../../domain/usecases/get_recommendations.dart';
-import '../../data/repositories/firebase_food_repository.dart';
-import '../../data/repositories/openrouter_ai_repository.dart';
+import 'package:healthy_eating_app/data/repositories/firebase_food_repository.dart';
+import 'package:healthy_eating_app/data/repositories/openrouter_ai_repository.dart';
+import 'package:healthy_eating_app/domain/repositories/ai_repository.dart';
+import 'package:healthy_eating_app/domain/repositories/food_repository.dart';
+import 'package:healthy_eating_app/domain/usecases/food_use_cases.dart';
+import 'package:healthy_eating_app/domain/usecases/get_recommendations.dart';
+
 
 // Репозитории
 final foodRepositoryProvider = Provider<FoodRepository>((ref) {
   final firestore = FirebaseFirestore.instance;
   const userId = '24YaHokBbjhecgiRvyahKn4l8c73';
-  // TODO: при расширении сделать singleTon с подписокой на uid status юзера от FireBase
+  // TODO(markovskyyy): при расширении сделать singleTon с подписокой на uid status юзера от FireBase
 
   return FirebaseFoodRepository(firestore: firestore, userId: userId);
 });

@@ -23,7 +23,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primaryColor: AppColors.primary,
         scaffoldBackgroundColor: AppColors.background,
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: AppColors.primary,
           secondary: AppColors.accent,
         ),
@@ -31,7 +31,7 @@ class MyApp extends ConsumerWidget {
           elevation: 0,
           centerTitle: true,
         ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: AppColors.accent,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

@@ -13,7 +13,7 @@ class GetRecommendations implements UseCase<String, void> {
   Future<String> call({void params}) async {
     final entries = await foodRepository.getEntries();
     final prompt = _buildPrompt(entries);
-    return await aiRepository.getRecommendations(prompt);
+    return aiRepository.getRecommendations(prompt);
   }
 
   String _buildPrompt(List<FoodEntry> entries) {

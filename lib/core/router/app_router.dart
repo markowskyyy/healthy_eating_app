@@ -61,13 +61,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
     switch (index) {
       case 0:
         context.go('/');
-        break;
       case 1:
         context.go('/recommendations');
-        break;
       case 2:
         context.go('/about');
-        break;
     }
   }
 }
