@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
     final notifier = ref.read(homeViewModelProvider.notifier);
-    final filteredEntries = notifier.filteredEntries();
+    // final filteredEntries = notifier.filteredEntries();
 
     return Scaffold(
       appBar: AppBar(
@@ -26,7 +26,7 @@ class HomePage extends ConsumerWidget {
           selectDate: notifier.selectDate,
           deleteEntry: notifier.deleteEntry,
           selectedDate: state.selectedDate,
-          entries: filteredEntries,
+          entries: notifier.filteredEntries(),
           onEditEntry: (entry) => _showEditDialog(context, ref, entry),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),

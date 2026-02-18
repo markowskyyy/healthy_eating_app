@@ -5,10 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/core/router/app_router.dart';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
+
+  final apiKey = dotenv.env['APPMETRICA_API_KEY']!;
+  AppMetrica.activate(AppMetricaConfig(apiKey));
+
+  AppMetrica.reportEvent('My first AppMetrica event!');
+
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -18,6 +26,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+
     return MaterialApp.router(
       title: 'Healthy Eating App',
       theme: ThemeData(
@@ -41,7 +51,7 @@ class MyApp extends ConsumerWidget {
           ),
         ),
       ),
-      routerConfig: appRouter,
+      routerConfig: router,
     );
   }
 }

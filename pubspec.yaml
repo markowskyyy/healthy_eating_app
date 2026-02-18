@@ -31,11 +31,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Fire base
+  # Firebase
   cloud_firestore:
   firebase_core:
   firebase_database:
   firebase_storage:
+
+  # Analytics
+  appmetrica_plugin: ^3.4.0
+  firebase_analytics:
 
   flutter_riverpod:
   http:
