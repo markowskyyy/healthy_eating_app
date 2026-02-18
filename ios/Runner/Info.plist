@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSUserTrackingUsageDescription</key>
+    <string>Это поможет нам показывать персонализированную рекламу и улучшать аналитику</string>
 	<key>CFBundleDisplayName</key>
 	<string>Healthy Eating App</string>
 	<key>CFBundleExecutable</key>
