@@ -40,7 +40,10 @@ dependencies:
   # Analytics
   appmetrica_plugin: ^3.4.0
   firebase_analytics:
+  appsflyer_sdk: ^6.17.8
+  apphud:
 
+  app_tracking_transparency:
   flutter_riverpod:
   http:
   flutter_dotenv:

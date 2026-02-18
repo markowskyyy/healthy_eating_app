@@ -1188,6 +1188,12 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240722.0)
+  - app_tracking_transparency (0.0.1):
+    - Flutter
+  - apphud (3.0.1):
+    - ApphudSDK (= 4.0.2)
+    - Flutter
+  - ApphudSDK (4.0.2)
   - appmetrica_plugin (3.4.0):
     - AppMetricaAnalytics (~> 5.14)
     - AppMetricaLibraryAdapter (~> 5.14)
@@ -1286,6 +1292,14 @@ PODS:
     - AppMetricaCore (= 5.16.0)
     - AppMetricaCoreUtils (= 5.16.0)
     - AppMetricaLog (= 5.16.0)
+  - appsflyer_sdk (6.17.8):
+    - appsflyer_sdk/Core (= 6.17.8)
+  - appsflyer_sdk/Core (6.17.8):
+    - AppsFlyerFramework (= 6.17.8)
+    - Flutter
+  - AppsFlyerFramework (6.17.8):
+    - AppsFlyerFramework/Main (= 6.17.8)
+  - AppsFlyerFramework/Main (6.17.8)
   - BoringSSL-GRPC (0.0.37):
     - BoringSSL-GRPC/Implementation (= 0.0.37)
     - BoringSSL-GRPC/Interface (= 0.0.37)
@@ -1551,7 +1565,10 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
+  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
+  - apphud (from `.symlinks/plugins/apphud/ios`)
   - appmetrica_plugin (from `.symlinks/plugins/appmetrica_plugin/ios`)
+  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -1562,6 +1579,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - ApphudSDK
     - AppMetricaAdSupport
     - AppMetricaAnalytics
     - AppMetricaCore
@@ -1585,6 +1603,7 @@ SPEC REPOS:
     - AppMetricaStorageUtils
     - AppMetricaSynchronization
     - AppMetricaWebKit
+    - AppsFlyerFramework
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
@@ -1611,8 +1630,14 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  app_tracking_transparency:
+    :path: ".symlinks/plugins/app_tracking_transparency/ios"
+  apphud:
+    :path: ".symlinks/plugins/apphud/ios"
   appmetrica_plugin:
     :path: ".symlinks/plugins/appmetrica_plugin/ios"
+  appsflyer_sdk:
+    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_analytics:
@@ -1628,6 +1653,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: a05cc83bf02079535e17169a73c5be5ba47f714b
+  app_tracking_transparency: e169b653478da7bb15a6c61209015378ca73e375
+  apphud: f7f847b94887386bec426daae9f4bba54c31290e
+  ApphudSDK: 33cbf3dfd746dca6dbf33afa183cdccadc5cd0c8
   appmetrica_plugin: f02dbb559d9cc64cff81f5b338d5859cf90484e7
   AppMetricaAdSupport: b1f4371eb11db6386dd021d9470029900e3eb26c
   AppMetricaAnalytics: 59679f27df598fd82109401059acb079a6982e3d
@@ -1652,6 +1680,8 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: defb3063fbf63c18aab8d54d87269348325816dc
   AppMetricaSynchronization: 459495f1c9bc10754375ef2b84e427085b3060a6
   AppMetricaWebKit: ea18edee9a1f742f0015888ec97b64e215f88b65
+  appsflyer_sdk: 8e77c7f47570e4596545b9fa16eb9114676c71e3
+  AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
   cloud_firestore: d12568452e8283063a2c849d00a49fdbf240dffc
   Firebase: 9a58fdbc9d8655ed7b79a19cf9690bb007d3d46d

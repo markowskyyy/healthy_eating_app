@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSUserTrackingUsageDescription</key>
-    <string>Это поможет нам показывать персонализированную рекламу и улучшать аналитику</string>
+    <string>This identifier will be used to deliver personalized ads.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Healthy Eating App</string>
 	<key>CFBundleExecutable</key>
