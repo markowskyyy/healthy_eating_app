@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/app/app_initializers.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/core/router/app_router.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:healthy_eating_app/l10n/l10n.dart';
 import 'package:healthy_eating_app/presentation/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   AppMetrica.runZoneGuarded(() async {
@@ -40,30 +43,51 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
 
-    return MaterialApp.router(
-      title: 'Healthy Eating App',
-      theme: ThemeData(
-        primaryColor: AppColors.primary,
-        scaffoldBackgroundColor: AppColors.background,
-        colorScheme: const ColorScheme.light(
-          primary: AppColors.primary,
-          secondary: AppColors.accent,
-        ),
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          centerTitle: true,
-        ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: AppColors.accent,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
+    return ValueListenableBuilder(
+      valueListenable: LocaleController.locale,
+      builder: (context, locale, _) {
+        return MaterialApp.router(
+          title: 'Healthy Eating App',
+          locale: locale,
+          theme: ThemeData(
+            primaryColor: AppColors.primary,
+            scaffoldBackgroundColor: AppColors.background,
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primary,
+              secondary: AppColors.accent,
+            ),
+            appBarTheme: const AppBarTheme(
+              elevation: 0,
+              centerTitle: true,
+            ),
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: AppColors.accent,
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+              ),
+            ),
           ),
-        ),
-      ),
-      routerConfig: router,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          localeResolutionCallback: (locale, supportedLocales) {
+            if (locale == null) return supportedLocales.first;
+
+            return supportedLocales.firstWhere(
+                  (l) => l.languageCode == locale.languageCode,
+              orElse: () => supportedLocales.first,
+            );
+          },
+          routerConfig: router,
+        );
+      },
     );
   }
 }

@@ -1,0 +1,42 @@
+{
+  "@@locale": "ru",
+
+  "aboutTitle": "О приложении",
+  "appName": "Healthy Eating App",
+  "appVersion": "Версия 1.0.0",
+
+  "aboutDescription": "Это приложение помогает отслеживать ваш ежедневный рацион и получать персонализированные рекомендации по питанию от искусственного интеллекта.",
+
+  "featuresTitle": "Возможности:",
+  "featureAddFood": "Добавление продуктов с указанием калорий",
+  "featureViewDays": "Просмотр записей за любой день",
+  "featureDelete": "Удаление записей",
+  "featureAiAnalysis": "Анализ рациона с помощью DeepSeek AI",
+
+  "chooseLanguage": "Выбрать язык:",
+  "languageRussian": "Русский",
+  "languageEnglish": "English",
+
+  "homeTitle": "Дневник питания",
+
+  "errorPrefix": "Ошибка: {error}",
+
+  "addButton": "Добавить",
+  "saveButton": "Сохранить",
+
+  "recommendationsTitle": "Рекомендации AI",
+  "recommendationsEmpty": "Нажмите кнопку, чтобы получить рекомендации",
+  "errorPrefix": "Ошибка: {error}",
+  "getRecommendationsButton": "Получить рекомендации",
+
+  "noEntriesForDay": "Нет записей за этот день",
+
+  "addEntryTitle": "Добавить запись",
+  "editEntryTitle": "Редактировать запись",
+
+  "productNameLabel": "Название продукта",
+  "massLabel": "Масса (гр)",
+  "caloriesOptionalLabel": "Калории (необязательно)",
+
+  "cancelButton": "Отмена"
+}

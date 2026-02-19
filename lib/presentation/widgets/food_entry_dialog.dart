@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
+import 'package:healthy_eating_app/domain/extensions/context_localizations.dart';
 
+enum FoodEntryDialogMode { add, edit }
 
 class FoodEntryDialog extends StatefulWidget {
   final Function(String name, double mass, double? calories) onSubmit;
+  final FoodEntryDialogMode mode;
+  final String buttonText;
+
   final String? initialName;
   final double? initialMass;
   final double? initialCalories;
-  final String buttonText;
 
   const FoodEntryDialog({
     super.key,
     required this.onSubmit,
+    required this.mode,
+    required this.buttonText,
     this.initialName,
     this.initialMass,
     this.initialCalories,
-    this.buttonText = 'Добавить',
   });
 
   @override
@@ -31,13 +36,12 @@ class _FoodEntryDialogState extends State<FoodEntryDialog> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.initialName ?? '');
-    _massController = TextEditingController(
-      text: widget.initialMass?.toString() ?? '',
-    );
-    _caloriesController = TextEditingController(
-      text: widget.initialCalories?.toString() ?? '',
-    );
+    _nameController =
+        TextEditingController(text: widget.initialName ?? '');
+    _massController =
+        TextEditingController(text: widget.initialMass?.toString() ?? '');
+    _caloriesController =
+        TextEditingController(text: widget.initialCalories?.toString() ?? '');
   }
 
   @override
@@ -50,24 +54,30 @@ class _FoodEntryDialogState extends State<FoodEntryDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.localizations;
+
     return AlertDialog(
-      title: Text(widget.buttonText == 'Добавить' ? 'Добавить запись' : 'Редактировать запись'),
+      title: Text(
+        widget.mode == FoodEntryDialogMode.add
+            ? l10n.addEntryTitle
+            : l10n.editEntryTitle,
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _nameController,
-            decoration: const InputDecoration(
-              labelText: 'Название продукта',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.productNameLabel,
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _massController,
-            decoration: const InputDecoration(
-              labelText: 'Масса (гр)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.massLabel,
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -75,26 +85,31 @@ class _FoodEntryDialogState extends State<FoodEntryDialog> {
           const SizedBox(height: 12),
           TextField(
             controller: _caloriesController,
-            decoration: const InputDecoration(
-              labelText: 'Калории (необязательно)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: l10n.caloriesOptionalLabel,
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Отмена'),
+          child: Text(l10n.cancelButton),
         ),
         ElevatedButton(
           onPressed: () {
             final name = _nameController.text.trim();
-            final mass = double.tryParse(_massController.text.trim()) ?? 0.0;
-            if (name.isNotEmpty && mass != 0.0) {
-              final calories = double.tryParse(_caloriesController.text);
+            final mass =
+                double.tryParse(_massController.text.trim()) ?? 0.0;
+
+            if (name.isNotEmpty && mass > 0) {
+              final calories =
+              double.tryParse(_caloriesController.text.trim());
               widget.onSubmit(name, mass, calories);
               Navigator.pop(context);
             }

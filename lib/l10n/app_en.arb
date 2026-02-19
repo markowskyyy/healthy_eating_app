@@ -1,0 +1,42 @@
+{
+  "@@locale": "en",
+
+  "aboutTitle": "About",
+  "appName": "Healthy Eating App",
+  "appVersion": "Version 1.0.0",
+
+  "aboutDescription": "This app helps you track your daily food intake and receive personalized nutrition recommendations powered by artificial intelligence.",
+
+  "featuresTitle": "Features:",
+  "featureAddFood": "Add foods with calorie information",
+  "featureViewDays": "View records for any day",
+  "featureDelete": "Delete records",
+  "featureAiAnalysis": "Diet analysis using DeepSeek AI",
+
+  "chooseLanguage": "Choose language:",
+  "languageRussian": "Russian",
+  "languageEnglish": "English",
+
+  "homeTitle": "Food Diary",
+
+  "errorPrefix": "Error: {error}",
+
+  "addButton": "Add",
+  "saveButton": "Save",
+
+  "recommendationsTitle": "AI Recommendations",
+  "recommendationsEmpty": "Tap the button to get recommendations",
+  "errorPrefix": "Error: {error}",
+  "getRecommendationsButton": "Get recommendations",
+
+  "noEntriesForDay": "No entries for this day",
+
+  "addEntryTitle": "Add entry",
+  "editEntryTitle": "Edit entry",
+
+  "productNameLabel": "Product name",
+  "massLabel": "Weight (g)",
+  "caloriesOptionalLabel": "Calories (optional)",
+
+  "cancelButton": "Cancel"
+}

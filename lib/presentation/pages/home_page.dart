@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
+import 'package:healthy_eating_app/domain/extensions/context_localizations.dart';
 import 'package:healthy_eating_app/presentation/providers/providers.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/home/home_viewmodel.dart';
 import 'package:healthy_eating_app/presentation/widgets/food_entry_dialog.dart';
 import 'package:healthy_eating_app/presentation/widgets/home_page_body.dart';
-
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -18,35 +18,35 @@ class HomePage extends ConsumerWidget {
 
     final appHud = ref.read(appHudRepositoryProvider);
 
-
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Дневник питания', style: AppTextStyles.titleWhite),
+        title: Text(
+          context.localizations.homeTitle,
+          style: AppTextStyles.titleWhite,
+        ),
         backgroundColor: AppColors.primary,
       ),
       body: homeState.when(
         data: (state) => HomePageBody(
-          // selectDate: notifier.selectDate;
           selectDate: (value) async {
-            // notifier.selectDate;
-            final result = await appHud.getPlacements();
-            final result2 = await appHud.getActiveSubscriptions();
-            final result3 = await appHud.isSubscribed();
-            final result4 = appHud.addListener((){
-
-            });
-            // final result5 = appHud.removeListener((){
-            //
-            // });
+            await appHud.getPlacements();
+            await appHud.getActiveSubscriptions();
+            await appHud.isSubscribed();
+            appHud.addListener(() {});
           },
-          deleteEntry:  notifier.deleteEntry,
+          deleteEntry: notifier.deleteEntry,
           selectedDate: state.selectedDate,
           entries: notifier.filteredEntries(),
           onEditEntry: (entry) => _showEditDialog(context, ref, entry),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Ошибка: $error')),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, stack) => Center(
+          child: Text(
+            context.localizations.errorPrefix(error.toString()),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddDialog(context, ref),
@@ -63,12 +63,17 @@ class HomePage extends ConsumerWidget {
         onSubmit: (name, mass, calories) {
           ref.read(homeViewModelProvider.notifier).addEntry(name, mass, calories);
         },
-        buttonText: 'Добавить',
+        buttonText: context.localizations.addButton,
+        mode: FoodEntryDialogMode.add,
       ),
     );
   }
 
-  void _showEditDialog(BuildContext context, WidgetRef ref, FoodEntry entry) {
+  void _showEditDialog(
+      BuildContext context,
+      WidgetRef ref,
+      FoodEntry entry,
+      ) {
     showDialog(
       context: context,
       builder: (ctx) => FoodEntryDialog(
@@ -85,7 +90,8 @@ class HomePage extends ConsumerWidget {
           );
           ref.read(homeViewModelProvider.notifier).updateEntry(updatedEntry);
         },
-        buttonText: 'Сохранить',
+        buttonText: context.localizations.saveButton,
+        mode: FoodEntryDialogMode.edit,
       ),
     );
   }

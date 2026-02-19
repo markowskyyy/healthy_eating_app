@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
+import 'package:healthy_eating_app/domain/extensions/context_localizations.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/recommendations/recommendations_viewmodel.dart';
 
 
@@ -15,8 +16,8 @@ class RecommendationsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'Рекомендации AI',
-            style: AppTextStyles.title.copyWith(color: Colors.white)
+          context.localizations.recommendationsTitle,
+          style: AppTextStyles.title.copyWith(color: Colors.white),
         ),
         backgroundColor: AppColors.primary,
       ),
@@ -37,7 +38,7 @@ class RecommendationsScreen extends ConsumerWidget {
                   data: (state) => SingleChildScrollView(
                     child: Text(
                       state.response.isEmpty
-                          ? 'Нажмите кнопку, чтобы получить рекомендации'
+                          ? context.localizations.recommendationsEmpty
                           : state.response,
                       style: AppTextStyles.body,
                     ),
@@ -45,7 +46,7 @@ class RecommendationsScreen extends ConsumerWidget {
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(
                     child: Text(
-                      'Ошибка: $error',
+                      context.localizations.errorPrefix(error.toString()),
                       style: const TextStyle(color: Colors.red),
                     ),
                   ),
@@ -63,8 +64,8 @@ class RecommendationsScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Получить рекомендации',
+              child: Text(
+                context.localizations.getRecommendationsButton,
                 style: AppTextStyles.subtitleWhite,
               ),
             ),

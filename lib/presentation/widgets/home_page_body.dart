@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
+import 'package:healthy_eating_app/domain/extensions/context_localizations.dart';
 import 'package:healthy_eating_app/presentation/widgets/date_selector.dart';
 
 class HomePageBody extends StatelessWidget {
@@ -28,7 +29,12 @@ class HomePageBody extends StatelessWidget {
         ),
         Expanded(
           child: entries.isEmpty
-              ? const Center(child: Text('Нет записей за этот день'))
+              ? Center(
+                  child: Text(
+                    context.localizations.noEntriesForDay,
+                    style: AppTextStyles.body,
+                  ),
+                )
               : ListView.builder(
             itemCount: entries.length,
             itemBuilder: (ctx, index) {
