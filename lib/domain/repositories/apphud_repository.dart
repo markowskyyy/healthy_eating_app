@@ -4,7 +4,7 @@ abstract class AppHudRepository {
   Future<List<AppHudPlacement>> getPlacements();
   Future<List<AppHudProduct>> getActiveSubscriptions();
   Future<bool> isSubscribed();
-  Future<void> purchase(AppHudProduct product);
+  Future<void> purchase(String productId);
   Future<void> restorePurchases();
   void addListener(void Function() listener);
   void removeListener(void Function() listener);

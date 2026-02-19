@@ -115,8 +115,8 @@ class AppHudRepositoryIml implements AppHudRepository {
 
   // Покупка продукта
   @override
-  Future<void> purchase(AppHudProduct product) async {
-    final result = await Apphud.purchase(productId: product.id);
+  Future<void> purchase(String productId) async {
+    final result = await Apphud.purchase(productId: productId);
 
     if (result.error != null) {
       print("Purchase failed: ${result.error!.message}");
