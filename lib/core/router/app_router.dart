@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:healthy_eating_app/core/analytics/localized_analytics_observer.dart';
 import 'package:healthy_eating_app/presentation/pages/about_screen.dart';
 import 'package:healthy_eating_app/presentation/pages/home_page.dart';
 import 'package:healthy_eating_app/presentation/pages/recommendations_screen.dart';
-import 'package:healthy_eating_app/presentation/providers/providers.dart';
 
 final appRouterProvider = Provider<GoRouter> ((ref) {
-  final analytics = ref.watch(screenAnalyticsProvider);
-
-
   return GoRouter(
     initialLocation: '/',
-    observers: [
-      // LocalizedAnalyticsObserver(analytics: analytics),
-    ],
     routes: [
       ShellRoute(
         builder: (context, state, child) =>
             ScaffoldWithNavBar(
-              analyticFunc: analytics.trackScreen,
+              analyticFunc: (value){},
               child: child,
             ),
         routes: [
@@ -94,5 +86,4 @@ class ScaffoldWithNavBar extends StatelessWidget {
         context.go('/about');
     }
   }
-
 }

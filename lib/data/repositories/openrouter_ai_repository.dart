@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'package:healthy_eating_app/domain/analytics/analytics_service.dart';
+import 'package:healthy_eating_app/core/analytics/analytics_hub.dart';
+import 'package:healthy_eating_app/domain/analytics/analytics_provider.dart';
 import 'package:healthy_eating_app/domain/repositories/ai_repository.dart';
 import 'package:http/http.dart' as http;
 
 class OpenRouterAiRepository implements AiRepository {
   final String apiKey;
   final String model;
-  final AnalyticsService analytics;
+  final AnalyticsHub analytics;
   final String baseUrl = 'https://openrouter.ai/api/v1/chat/completions';
 
   OpenRouterAiRepository({
@@ -45,6 +46,9 @@ class OpenRouterAiRepository implements AiRepository {
           'OpenRouter API error',
           error: Exception('HTTP ${response.statusCode}'),
           stackTrace: StackTrace.current,
+          providers: {
+            AnalyticsProvider.appmetrica,
+          },
         );
         throw Exception('OpenRouter API error: ${response.statusCode} - ${response.body}');
       }
@@ -53,6 +57,9 @@ class OpenRouterAiRepository implements AiRepository {
         'OpenRouter request failed',
         error: e,
         stackTrace: s,
+        providers: {
+          AnalyticsProvider.appmetrica,
+        },
       );
       rethrow;
     }

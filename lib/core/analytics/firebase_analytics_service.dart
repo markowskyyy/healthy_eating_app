@@ -18,6 +18,7 @@ class FirebaseAnalyticsService implements AnalyticsService {
   @override
   void logEvent(String name, {Map<String, dynamic>? parameters}) {
     if (!canTrack) return;
+
     _analytics.logEvent(name: name, parameters: parameters?.cast<String, Object>());
   }
 
