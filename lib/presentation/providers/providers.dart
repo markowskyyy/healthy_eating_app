@@ -58,8 +58,6 @@ final getRecommendationsProvider = Provider<GetRecommendations>((ref) {
 
 
 
-
-
 //Аналитика
 
 // Проверка ATT
@@ -72,7 +70,7 @@ final appsFlyerSdkProvider = Provider<AppsflyerSdk>((ref) {
   throw UnimplementedError('appsFlyerSdkProvider must be overridden in main');
 });
 
-// провайдер для обращение ко все инструментам аналитики
+// Провайдер для обращение ко все инструментам аналитики
 final analyticsHubProvider = Provider<AnalyticsHub>((ref) {
   final appsflyer = ref.watch(appsFlyerSdkProvider);
   final canTrack = ref.watch(canTrackProvider);

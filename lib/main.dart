@@ -22,10 +22,7 @@ void main() async {
     runApp(
       ProviderScope(
         overrides: [
-          /// прокидываем canTrack
           canTrackProvider.overrideWithValue(canTrack),
-
-          /// прокидываем AppsFlyer SDK
           appsFlyerSdkProvider.overrideWithValue(appsFlyerSdk),
         ],
         child: const MyApp(),

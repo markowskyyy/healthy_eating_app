@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/entities/food_entry.dart';
+import 'package:healthy_eating_app/presentation/providers/providers.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/home/home_viewmodel.dart';
 import 'package:healthy_eating_app/presentation/widgets/food_entry_dialog.dart';
 import 'package:healthy_eating_app/presentation/widgets/home_page_body.dart';
@@ -14,7 +15,10 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
     final notifier = ref.read(homeViewModelProvider.notifier);
-    // final filteredEntries = notifier.filteredEntries();
+
+    final appHud = ref.read(appHudRepositoryProvider);
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +27,19 @@ class HomePage extends ConsumerWidget {
       ),
       body: homeState.when(
         data: (state) => HomePageBody(
-          selectDate: notifier.selectDate,
+          // selectDate: notifier.selectDate;
+          selectDate: (value) async {
+            // notifier.selectDate;
+            final result = await appHud.getPlacements();
+            final result2 = await appHud.getActiveSubscriptions();
+            final result3 = await appHud.isSubscribed();
+            final result4 = appHud.addListener((){
+
+            });
+            // final result5 = appHud.removeListener((){
+            //
+            // });
+          },
           deleteEntry:  notifier.deleteEntry,
           selectedDate: state.selectedDate,
           entries: notifier.filteredEntries(),

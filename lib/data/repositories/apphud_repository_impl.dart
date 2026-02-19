@@ -4,6 +4,7 @@ import 'package:apphud/models/apphud_models/apphud_attribution_provider.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:healthy_eating_app/core/analytics/my_apphud_listener.dart';
+import 'package:healthy_eating_app/data/local/local_price_data.dart';
 import 'package:healthy_eating_app/domain/entities/apphud_entities.dart';
 import 'package:healthy_eating_app/domain/repositories/apphud_repository.dart';
 
@@ -56,45 +57,54 @@ class AppHudRepositoryIml implements AppHudRepository {
   // Получение всех paywalls с продуктами
   @override
   Future<List<AppHudPlacement>> getPlacements() async {
-    return [];
-    // final paywallsData = await Apphud.paywallsDidLoadCallback();
-    // return paywallsData.paywalls
-    //     ?.map((p) => AppHudPlacement(
-    //   id: p.identifier,
-    //   paywall: p.products != null
-    //       ? AppHudPaywall(
-    //     id: p.identifier,
-    //     name: p.title,
-    //     products: p.products!
-    //         .map((pr) => AppHudProduct(
-    //       id: pr.productId,
-    //       name: pr.title,
-    //       price: pr.price,
-    //       currencyCode: pr.currency,
-    //       isSubscribed: false,
-    //     ))
-    //         .toList(),
-    //   )
-    //       : null,
-    // ))
-    //     .toList() ??
-    //     [];
+    final placementsData = await Apphud.paywallsDidLoadCallback();
+    final paywalls = placementsData.paywalls ?? [];
+
+    return paywalls.map((paywall) {
+      final products = paywall.products?.map((product) {
+        final price = localPrices[product.productId] ?? 0.0;
+        final currencyCode = localCurrency[product.productId] ?? 'USD';
+
+        return AppHudProduct(
+          id: product.productId,
+          name: product.name ?? '',
+          price: price,
+          currencyCode: currencyCode,
+          isSubscribed: false, // Будет обновлено через Apphud subscription
+        );
+      }).toList() ?? [];
+
+      final appHudPaywall = AppHudPaywall(
+        id: paywall.identifier,
+        name: paywall.identifier,
+        products: products,
+      );
+
+      return AppHudPlacement(
+        id: paywall.identifier,
+        paywall: appHudPaywall,
+      );
+    }).toList();
   }
 
   // Получение активных подписок
   @override
   Future<List<AppHudProduct>> getActiveSubscriptions() async {
     final subscriptions = await Apphud.subscriptions();
-    return subscriptions
-        .where((s) => s.isActive)
-        .map((s) => AppHudProduct(
-      id: s.productId,
-      name: s.productId,
-      price: 0.0,
-      currencyCode: '',
-      isSubscribed: true,
-    ))
-        .toList();
+
+
+    return subscriptions.where((s) => s.isActive).map((s) {
+
+      final price = localPrices[s.productId] ?? 0.0;
+      final currencyCode = localCurrency[s.productId] ?? 'USD';
+        return AppHudProduct(
+          id: s.productId,
+          name: s.productId,
+          price: price,
+          currencyCode: currencyCode,
+          isSubscribed: true,
+        );
+    }).toList();
   }
 
   // Проверка активной подписки
