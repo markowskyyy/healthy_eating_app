@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,8 +7,13 @@ import 'package:healthy_eating_app/presentation/pages/home_page.dart';
 import 'package:healthy_eating_app/presentation/pages/recommendations_screen.dart';
 
 final appRouterProvider = Provider<GoRouter> ((ref) {
+  final analytics = FirebaseAnalytics.instance;
+
   return GoRouter(
     initialLocation: '/',
+    observers: [
+      FirebaseAnalyticsObserver(analytics: analytics),
+    ],
     routes: [
       ShellRoute(
         builder: (context, state, child) =>
