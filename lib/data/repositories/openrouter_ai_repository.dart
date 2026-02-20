@@ -32,7 +32,7 @@ class OpenRouterAiRepository implements AiRepository {
             {'role': 'user', 'content': prompt}
           ],
           'temperature': 0.3,
-          'max_tokens': 330,
+          'max_tokens': 400,
         }),
       );
 
