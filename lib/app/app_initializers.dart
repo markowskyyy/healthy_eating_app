@@ -8,6 +8,7 @@ import 'package:apphud/apphud.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:apphud/models/apphud_models/apphud_attribution_data.dart';
 import 'package:apphud/models/apphud_models/apphud_attribution_provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> loadEnv() async {
   await dotenv.load(fileName: '.env');
@@ -15,6 +16,10 @@ Future<void> loadEnv() async {
 
 Future<void> initFirebase() async {
   await Firebase.initializeApp();
+}
+
+Future<void> initAds () async {
+  MobileAds.instance.initialize();
 }
 
 Future<bool> initTracking() async {

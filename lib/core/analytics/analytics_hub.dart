@@ -3,7 +3,6 @@ import 'package:healthy_eating_app/domain/analytics/analytics_service.dart';
 
 class AnalyticsHub {
   final Map<AnalyticsProvider, AnalyticsService> _services;
-
   // Задача класса зависимости от providers отправлять логи в разные инструменты аналитики
 
   AnalyticsHub(List<AnalyticsService> services)

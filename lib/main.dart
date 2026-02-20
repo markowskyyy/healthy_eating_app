@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:healthy_eating_app/app/app_initializers.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/core/router/app_router.dart';
@@ -15,6 +16,8 @@ void main() async {
 
     await loadEnv();
     await initFirebase();
+
+    await initAds();
 
     final canTrack = await initTracking();
     final appsFlyerSdk = await initAppsFlyer();

@@ -6,6 +6,8 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSUserTrackingUsageDescription</key>
     <string>This identifier will be used to deliver personalized ads.</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-9376717320250525~1981744892</string>
 	<key>CFBundleDisplayName</key>
 	<string>Healthy Eating App</string>
 	<key>CFBundleExecutable</key>

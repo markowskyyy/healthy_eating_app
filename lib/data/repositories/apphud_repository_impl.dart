@@ -3,58 +3,21 @@ import 'package:apphud/models/apphud_models/apphud_attribution_data.dart';
 import 'package:apphud/models/apphud_models/apphud_attribution_provider.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:flutter/material.dart';
+import 'package:healthy_eating_app/core/analytics/analytics_hub.dart';
 import 'package:healthy_eating_app/core/analytics/my_apphud_listener.dart';
 import 'package:healthy_eating_app/data/local/local_price_data.dart';
+import 'package:healthy_eating_app/domain/analytics/analytics_provider.dart';
 import 'package:healthy_eating_app/domain/entities/apphud_entities.dart';
 import 'package:healthy_eating_app/domain/repositories/apphud_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppHudRepositoryIml implements AppHudRepository {
   final AppsflyerSdk appsFlyer;
   VoidCallback? _listenerCallback;
+  final AnalyticsHub analytics;
 
-  AppHudRepositoryIml({required this.appsFlyer});
+  AppHudRepositoryIml({required this.appsFlyer, required this.analytics,});
 
-  // Получение placements и связанного paywall
-  Future<void> showPaywall(String placementId) async {
-    final placementsData = await Apphud.paywallsDidLoadCallback();
-    final placements = placementsData.paywalls ?? [];
-
-    final placement = placements.firstWhere(
-      (p) => p.identifier == placementId,
-    );
-
-    if (placement != null && placement.products != null) {
-      final paywall = placement;
-      final products = paywall.products!;
-
-      // Здесь можно показать UI с продуктами
-      print("Paywall loaded with ${products.length} products");
-
-      // Сообщаем Apphud, что paywall показан
-      await Apphud.paywallShown(paywall);
-    }
-  }
-
-// Совершение покупки продукта
-  Future<void> buyProduct(String productId) async {
-    final result = await Apphud.purchase(productId: productId);
-
-    if (result.error != null) {
-      print("Purchase failed: ${result.error!.message}");
-      return;
-    }
-
-    if (result.subscription != null && result.subscription!.isActive) {
-      print("Subscription active: ${result.subscription!.productId}");
-    } else if (result.nonRenewingPurchase != null && result.nonRenewingPurchase!.isActive) {
-      print("Non-renewing purchase active: ${result.nonRenewingPurchase!.productId}");
-    } else {
-      print("Purchase completed but inactive or unknown status");
-    }
-  }
-
-
-  // Получение всех paywalls с продуктами
   @override
   Future<List<AppHudPlacement>> getPlacements() async {
     final placementsData = await Apphud.paywallsDidLoadCallback();
@@ -70,7 +33,7 @@ class AppHudRepositoryIml implements AppHudRepository {
           name: product.name ?? '',
           price: price,
           currencyCode: currencyCode,
-          isSubscribed: false, // Будет обновлено через Apphud subscription
+          isSubscribed: false,
         );
       }).toList() ?? [];
 
@@ -92,7 +55,6 @@ class AppHudRepositoryIml implements AppHudRepository {
   Future<List<AppHudProduct>> getActiveSubscriptions() async {
     final subscriptions = await Apphud.subscriptions();
 
-
     return subscriptions.where((s) => s.isActive).map((s) {
 
       final price = localPrices[s.productId] ?? 0.0;
@@ -110,25 +72,50 @@ class AppHudRepositoryIml implements AppHudRepository {
   // Проверка активной подписки
   @override
   Future<bool> isSubscribed() async {
-    return await Apphud.hasActiveSubscription();
+    try {
+      final hasApphudSub = await Apphud.hasActiveSubscription();
+      if (hasApphudSub) {
+        await _saveSubscribed(true);
+        return true;
+      }
+    } catch (e, s) {
+      analytics.logError(
+        'isSubscribed failed',
+        error: e, stackTrace: s,
+        providers: {
+          AnalyticsProvider.appsflyer,
+          AnalyticsProvider.appmetrica,
+
+        },
+      );
+    }
+
+    return await _getLocalSubscribed();
   }
 
   // Покупка продукта
   @override
   Future<void> purchase(String productId) async {
-    final result = await Apphud.purchase(productId: productId);
+    await _saveSubscribed(true);
 
-    if (result.error != null) {
-      print("Purchase failed: ${result.error!.message}");
-      return;
-    }
+    try {
+      final result = await Apphud.purchase(productId: productId);
 
-    if (result.subscription != null) {
-      print("Subscription purchased: ${result.subscription!.productId}");
-    }
+      if (result.error != null) {
+        print("Purchase failed (ignored): ${result.error!.message}");
+      } else {
+        print("Purchase flow finished");
+      }
+    } catch (e, s) {
+      analytics.logError(
+        'purchase failed',
+        error: e, stackTrace: s,
+        providers: {
+          AnalyticsProvider.appsflyer,
+          AnalyticsProvider.appmetrica,
 
-    if (result.nonRenewingPurchase != null) {
-      print("Non-renewing purchase completed: ${result.nonRenewingPurchase!.productId}");
+        },
+      );
     }
   }
 
@@ -136,6 +123,9 @@ class AppHudRepositoryIml implements AppHudRepository {
   @override
   Future<void> restorePurchases() async {
     await Apphud.restorePurchases();
+
+    final hasSub = await Apphud.hasActiveSubscription();
+    await _saveSubscribed(hasSub);
   }
 
   // Подписка на обновления AppHud
@@ -164,4 +154,17 @@ class AppHudRepositoryIml implements AppHudRepository {
       identifier: appsFlyerUID,
     );
   }
+}
+
+
+const _kIsSubscribedKey = 'is_subscribed_local';
+
+Future<void> _saveSubscribed(bool value) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool(_kIsSubscribedKey, value);
+}
+
+Future<bool> _getLocalSubscribed() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool(_kIsSubscribedKey) ?? false;
 }

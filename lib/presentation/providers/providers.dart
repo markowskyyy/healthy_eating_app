@@ -16,6 +16,9 @@ import 'package:healthy_eating_app/domain/repositories/apphud_repository.dart';
 import 'package:healthy_eating_app/domain/repositories/food_repository.dart';
 import 'package:healthy_eating_app/domain/usecases/food_use_cases.dart';
 import 'package:healthy_eating_app/domain/usecases/get_recommendations.dart';
+import 'package:healthy_eating_app/presentation/viewmodels/purchases/purchases_state.dart';
+import 'package:healthy_eating_app/presentation/viewmodels/purchases/purchases_viewmodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 // Репозитории
@@ -39,7 +42,8 @@ final aiRepositoryProvider = Provider<AiRepository>((ref) {
 // AppHud
 final appHudRepositoryProvider = Provider<AppHudRepository>((ref) {
   final appsFlyer = ref.read(appsFlyerSdkProvider);
-  return AppHudRepositoryIml(appsFlyer: appsFlyer);
+  final analytics = ref.watch(analyticsHubProvider);
+  return AppHudRepositoryIml(appsFlyer: appsFlyer, analytics: analytics);
 });
 
 
@@ -90,3 +94,20 @@ final analyticsHubProvider = Provider<AnalyticsHub>((ref) {
     ),
   ]);
 });
+
+
+// Purchases
+final localSubscriptionProvider = FutureProvider<bool>((ref) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('is_subscribed_local') ?? false;
+});
+
+final purchasesViewModelProvider = StateNotifierProvider<PurchasesViewModel, PurchasesState>((ref) {
+  final appHud = ref.read(appHudRepositoryProvider);
+  final localSub = ref.watch(localSubscriptionProvider).maybeWhen(
+    data: (v) => v,
+    orElse: () => false,
+  );
+  return PurchasesViewModel(appHud, initialSubscribed: localSub);
+});
+

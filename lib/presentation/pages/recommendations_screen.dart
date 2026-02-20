@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:healthy_eating_app/core/consts/design.dart';
 import 'package:healthy_eating_app/domain/extensions/context_localizations.dart';
+import 'package:healthy_eating_app/presentation/providers/providers.dart';
 import 'package:healthy_eating_app/presentation/viewmodels/recommendations/recommendations_viewmodel.dart';
+import 'package:healthy_eating_app/presentation/widgets/paywall_dialog.dart';
 
 
 class RecommendationsScreen extends ConsumerWidget {
@@ -55,14 +57,21 @@ class RecommendationsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => viewModel.fetchRecommendations(),
+              onPressed: () async {
+                final isSubscribed = await ref.read(localSubscriptionProvider.future);
+
+                if (isSubscribed) {
+                  viewModel.fetchRecommendations();
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const PaywallDialog(),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.black,
                 minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
               child: Text(
                 context.localizations.getRecommendationsButton,
