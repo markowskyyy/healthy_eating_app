@@ -23,9 +23,7 @@ class FirebaseFoodRepository implements FoodRepository {
   @override
   Future<List<FoodEntry>> getEntries() async {
     try {
-      final snapshot = await _entriesCollection
-          .orderBy('date', descending: true)
-          .get();
+      final snapshot = await _entriesCollection.get();
       return snapshot.docs
           .map((doc) => FoodEntryModel.fromFirestore(doc))
           .toList();

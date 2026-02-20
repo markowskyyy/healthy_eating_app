@@ -58,9 +58,9 @@ class RecommendationsScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final isSubscribed = await ref.read(localSubscriptionProvider.future);
+                final purchaseState = ref.read(purchasesViewModelProvider);
 
-                if (isSubscribed) {
+                if (purchaseState.isSubscribed) {
                   viewModel.fetchRecommendations();
                 } else {
                   showDialog(

@@ -23,7 +23,6 @@ void main() async {
 
     await initAppHud(appsFlyerSdk);
     await initAppMetrica();
-    await preloadAppHud();
     runApp(
       ProviderScope(
         overrides: [

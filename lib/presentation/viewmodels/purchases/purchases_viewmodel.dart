@@ -9,20 +9,19 @@ class PurchasesViewModel extends StateNotifier<PurchasesState> {
       this.appHud, {required bool initialSubscribed}) : super(
     PurchasesState.initial().copyWith(isSubscribed: initialSubscribed),
   ) {
-    _init();
+    load();
   }
 
-  Future<void> _init() async {
-    final placements = await appHud.getPlacements();
-    state = state.copyWith(placements: placements);
-  }
 
   Future<void> load() async {
     try {
       state = state.copyWith(isLoading: true);
 
       final isSubscribed = await appHud.isSubscribed();
+      if (!mounted) return;
+
       final placements = await appHud.getPlacements();
+      if (!mounted) return;
 
       state = state.copyWith(
         isSubscribed: isSubscribed,
@@ -30,6 +29,8 @@ class PurchasesViewModel extends StateNotifier<PurchasesState> {
         isLoading: false,
       );
     } catch (e) {
+      if (!mounted) return;
+
       state = state.copyWith(
         isLoading: false,
         error: e.toString(),

@@ -26,20 +26,20 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
-    _bannerAd = BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {_isBannerLoaded = true;});
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-          debugPrint('BannerAd failed: $error');
-        },
-      ),
-    )..load();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdHelper.bannerAdUnitId,
+    //   request: const AdRequest(),
+    //   size: AdSize.banner,
+    //   listener: BannerAdListener(
+    //     onAdLoaded: (ad) {
+    //       setState(() {_isBannerLoaded = true;});
+    //     },
+    //     onAdFailedToLoad: (ad, error) {
+    //       ad.dispose();
+    //       debugPrint('BannerAd failed: $error');
+    //     },
+    //   ),
+    // )..load();
   }
 
   @override

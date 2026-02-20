@@ -74,11 +74,6 @@ Future<void> initAppMetrica() async {
   await AppMetrica.reportEvent('Open app event');
 }
 
-Future<void> preloadAppHud() async {
-  // final placements = await Apphud.placements();
-  // final paywall = placements.first.paywall;
-  // final products = paywall?.products ?? [];
-}
 
 Future<bool> _checkTrackingAuthorization() async {
   if (Platform.isIOS) {
